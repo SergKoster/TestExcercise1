@@ -15,11 +15,10 @@ cursor = conn.cursor()
 # Создание таблицы leads
 Definitions.CreateLeadsTable(cursor)
 
-
-
-
-Definitions.JsonToSQL(data1, cursor)
+Definitions.JsonToSQL(data1, cursor) # Перемещаем данные из json в sql таблицу
 Definitions.JsonToSQL(data2, cursor)
+
+Definitions.convert_to_csv(data1, cursor)
 
 
 
