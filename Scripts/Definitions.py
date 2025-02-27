@@ -3,7 +3,7 @@ import json
 import random
 import csv
 
-def CreateLeadsTable(cursor):
+def CreateLeadsTable(cursor): # Просто создание таблицы SQL
     cursor.execute("""
             CREATE TABLE IF NOT EXISTS leads(
                 id INTEGER PRIMARY KEY,
@@ -27,7 +27,7 @@ def CreateLeadsTable(cursor):
                 labor_cost TEXT
             )""")
     
-def JsonToSQL(data, cursor):
+def JsonToSQL(data, cursor): # Переносим информацию из json файлов в SQL таблицу
 
     leads = data["_embedded"]["leads"]
 
@@ -51,10 +51,10 @@ def JsonToSQL(data, cursor):
 
 def api_emulator(data, page, page_size=10):
     """
-    Эмулирует API: возвращает подмножество данных для заданной страницы.
-    Например, если в исходном data в "_embedded" лежит список лидов,
-    то возвращается только часть из них.
+    Типа API эмуляция. На входе страница и кол-во записей на одной странице. 
+    Выход это одна страница, указанная на входе.
     """
+
     leads = data["_embedded"]["leads"]
     total = len(leads)
     total_pages = (total // page_size) + (1 if total % page_size else 0)
@@ -77,7 +77,7 @@ def api_emulator(data, page, page_size=10):
 
 
 
-def convert_to_csv(data, cursor):
+def convert_to_csv(data, cursor): 
     all_leads = []
     # Симулируем 30 страниц; если данных меньше, цикл может завершиться раньше
     for page in range(1, 31):
@@ -87,6 +87,13 @@ def convert_to_csv(data, cursor):
             break
         all_leads.extend(leads)
         
+        # Объяснение пагинации здесь:
+
+        """
+        С помощью api_emulator берутся данные и делятся на 30 'страниц' по 10 записей.
+        По сути просто берётся инфа из json файла, но не вся, а только определённое кол-во записей.
+        В днном случае это просто 
+        """
         
         # JsonToSQL(page_data, cursor)
     
